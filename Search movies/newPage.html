@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Películas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Detalles de la Película</h1>
+        <div id="movieDetails" class="mt-4">
+            <div class="d-flex align-items-center" id="loader">
+                <strong>Loading...</strong>
+                <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            </div>
+        </div>
+        <a href="index.html" class="btn btn-secondary mt-3 mb-2">Volver</a>
+    </div>
+
+    <script>
+        const YOUR_API_KEY = "bb9571fd"
+        const params = new URLSearchParams(window.location.search);
+        const imdbID = params.get('imdbID');
+
+        if (imdbID) {
+            fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${YOUR_API_KEY}`)
+                .then(response => response.json())
+                .then(movie => {
+                    if (movie.Response === "True") {
+                        document.querySelector('#loader').style.visibility = "hidden";
+                        document.getElementById('movieDetails').innerHTML = `
+                            <div class="card">
+                                <img src="${movie.Poster}" class="card-img-top" alt="${movie.Title}">
+                                <div class="card-body">
+                                    <h2>${movie.Title}</h2>
+                                    <p><strong>Año:</strong> ${movie.Year}</p>
+                                    <p><strong>Género:</strong> ${movie.Genre}</p>
+                                    <p><strong>Director:</strong> ${movie.Director}</p>
+                                    <p><strong>Actores:</strong> ${movie.Actors}</p>
+                                    <p><strong>Sinopsis:</strong> ${movie.Plot}</p>
+                                    <p><strong>Calificación:</strong> ${movie.imdbRating}</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        document.getElementById('movieDetails').innerHTML = '<p class="text-danger">No se encontraron detalles de la película.</p>';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            document.getElementById('movieDetails').innerHTML = '<p class="text-danger">No existe ID de película.</p>';
+        }
+    </script>
+</body>
+</html>
