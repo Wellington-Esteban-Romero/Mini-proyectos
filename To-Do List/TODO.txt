@@ -1,0 +1,3 @@
+Descripción: Una lista de tareas donde los usuarios puedan agregar, eliminar y marcar tareas como completadas. 
+También puedes añadir características como la persistencia de datos usando localStorage para que las tareas se mantengan guardadas aunque se cierre el navegador.
+Características adicionales: Filtros de tareas (completadas, pendientes), edición de tareas.
